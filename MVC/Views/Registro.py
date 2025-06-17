@@ -23,11 +23,16 @@ class Registro:
 
             Label(ventanaPlantilla, text="Teléfono:").place(x=10, y=130)
             Entry(ventanaPlantilla).place(x=100, y=130)
+
+            if rol=="Medico":
+                Label(ventanaPlantilla, text="Especialidades:").place(x=10, y=160)
         
         elif accion=="Eliminar":
 
             Label(ventanaPlantilla, text="Cédula:").place(x=10, y=100)
             Entry(ventanaPlantilla).place(x=100, y=100)
+        
+        
 
         if accion == "Registrar":
             btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("registrar"))
