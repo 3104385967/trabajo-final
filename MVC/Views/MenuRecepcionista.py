@@ -4,6 +4,8 @@ from tkinter import messagebox
 import winsound
 from tkcalendar import Calendar
 
+from .Registro import Registro
+
 
 class MenuRecepcionista():
     def menuPaciente(self, event):
@@ -28,34 +30,9 @@ class MenuRecepcionista():
             self.menuCitas.grab_release()
 
     def plantillaPaciente(self, accion):
-        ventanaPlantilla = Toplevel(self.ventana)
-        ventanaPlantilla.title(f"{accion} Paciente")
-        ventanaPlantilla.geometry("300x300")
-        ventanaPlantilla.resizable(0, 0)
+        rol="Paciente"
+        self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)
 
-        Label(ventanaPlantilla, text="Cédula:").place(x=10, y=10)
-        Entry(ventanaPlantilla).place(x=100, y=10)
-
-        Label(ventanaPlantilla, text="Nombre:").place(x=10, y=40)
-        Entry(ventanaPlantilla).place(x=100, y=40)
-
-        Label(ventanaPlantilla, text="Apellido:").place(x=10, y=70)
-        Entry(ventanaPlantilla).place(x=100, y=70)
-
-        Label(ventanaPlantilla, text="Correo:").place(x=10, y=100)
-        Entry(ventanaPlantilla).place(x=100, y=100)
-
-        Label(ventanaPlantilla, text="Teléfono:").place(x=10, y=130)
-        Entry(ventanaPlantilla).place(x=100, y=130)
-
-        if accion == "Registrar":
-            btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("registrar"))
-        elif accion == "Modificar":
-            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
-        elif accion == "Eliminar":
-            btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
-
-        btn.place(x=90, y=200)
     
     def plantillaCita(self, accion):
         ventanaPlantilla = Toplevel(self.ventana)
@@ -76,10 +53,11 @@ class MenuRecepcionista():
         Entry(ventanaPlantilla).place(x=100, y=130)
 
         Label(ventanaPlantilla, text="Fecha:").place(x=10, y=100)
-        fecha_entry = Entry(ventanaPlantilla)
+        fecha_entry = Entry(ventanaPlantilla, state="disabled")
         fecha_entry.place(x=120, y=100)
 
         def abrir_calendario():
+            fecha_entry.config(state="normal")
             top_cal = Toplevel(ventanaPlantilla)
             top_cal.title("Seleccionar Fecha")
             cal = Calendar(top_cal, selectmode='day', date_pattern='yyyy-mm-dd')
@@ -88,6 +66,7 @@ class MenuRecepcionista():
             def seleccionar_fecha():
                 fecha_entry.delete(0, END)
                 fecha_entry.insert(0, cal.get_date())
+                fecha_entry.config(state="disabled")
                 top_cal.destroy()
 
             Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
