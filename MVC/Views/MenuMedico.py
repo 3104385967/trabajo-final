@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import winsound
+from Controllers.Controllers_Medico import ControladorMedico
 
 class MenuMedico():
     def menuCitas(self, event):
@@ -37,7 +38,19 @@ class MenuMedico():
         ventanaPlantilla.geometry("300x300")
         ventanaPlantilla.resizable(0, 0)
 
-    
+        Label(ventanaPlantilla, text="Especialidades")
+
+        Listbox=Listbox(ventanaPlantilla,width=40, height=5)
+        Listbox.pack(pady=5)
+
+        especialidades=self.controlador.obtener_especialidades()
+        if especialidades:
+            for esp in especialidades:
+                Listbox.insert(END, esp) #Al final de la lista
+        else:
+            Listbox.insert(END,"No se encontraron especialidades")
+
+
         btn = Button(ventanaPlantilla, text="Generar", width=15)
         btn.place(x=100, y=200)
 
@@ -81,7 +94,12 @@ class MenuMedico():
         
     
 
-    def __init__(self):
+    def __init__(self, id_usuario):
+        self.id_usuario = id_usuario
+        self.controlador = ControladorMedico()
+        self.controlador.id_usuario = id_usuario
+        self.controlador.obtener_id_medico()
+        
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
         self.ventana.config(width=800, height=600)

@@ -24,8 +24,10 @@ class Registro:
             Label(ventanaPlantilla, text="Teléfono:").place(x=10, y=130)
             Entry(ventanaPlantilla).place(x=100, y=130)
 
-            if rol=="Medico":
+            if rol=="Medico" and accion=="Registrar":
                 Label(ventanaPlantilla, text="Especialidades:").place(x=10, y=160)
+                self.btn_espe=Button(ventanaPlantilla, text="agregar especialidad").place(x=100, y=160)
+                
         
         elif accion=="Eliminar":
 
