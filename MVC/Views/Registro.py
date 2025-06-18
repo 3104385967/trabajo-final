@@ -35,11 +35,11 @@ class Registro:
         
 
         if accion == "Registrar":
-            btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("registrar"))
+            btn = Button(ventanaPlantilla, text="Registrar", width=15)
         elif accion == "Modificar":
-            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
+            btn = Button(ventanaPlantilla, text="Modificar", width=15)
         elif accion == "Eliminar":
-            btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
+            btn = Button(ventanaPlantilla, text="Eliminar", width=15)
 
         btn.place(x=90, y=200)
 
