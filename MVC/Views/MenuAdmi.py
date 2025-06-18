@@ -10,9 +10,9 @@ class MenuAdministrador():
         
     def menuRecepcionista(self, event):
         self.menuRecepcionista = Menu(self.ventana, tearoff=0)
-        self.menuRecepcionista.add_command(label="Registrar Recepcionista", command=lambda: self.plantillaRecepcionista("Registrar"))
-        self.menuRecepcionista.add_command(label="Modificar Recepcionista", command=lambda: self.plantillaRecepcionista("Modificar"))
-        self.menuRecepcionista.add_command(label="Eliminar Recepcionista", command=lambda: self.plantillaRecepcionista("Eliminar"))
+        self.menuRecepcionista.add_command(label="Registrar Recepcionista", command=lambda: self.gestionar_recepcionistas("Registrar"))
+        self.menuRecepcionista.add_command(label="Modificar Recepcionista", command=lambda: self.gestionar_recepcionistas("Modificar"))
+        self.menuRecepcionista.add_command(label="Eliminar Recepcionista", command=lambda: self.gestionar_recepcionistas("Eliminar"))
 
         try:
             self.menuRecepcionista.tk_popup(event.x_root, event.y_root)
@@ -21,9 +21,9 @@ class MenuAdministrador():
 
     def menuMedico(self, event):
         self.menuMedico = Menu(self.ventana, tearoff=0)
-        self.menuMedico.add_command(label="Registrar Médico", command=lambda: self.plantillaMedico("Registrar"))
-        self.menuMedico.add_command(label="Modificar Médico", command=lambda: self.plantillaMedico("Modificar"))
-        self.menuMedico.add_command(label="Eliminar Médico", command=lambda: self.plantillaMedico("Eliminar"))
+        self.menuMedico.add_command(label="Registrar Médico", command=lambda: self.gestionar_medicos("Registrar"))
+        self.menuMedico.add_command(label="Modificar Médico", command=lambda: self.gestionar_medicos("Modificar"))
+        self.menuMedico.add_command(label="Eliminar Médico", command=lambda: self.gestionar_medicos("Eliminar"))
 
         try:
             self.menuMedico.tk_popup(event.x_root, event.y_root)
@@ -39,12 +39,12 @@ class MenuAdministrador():
         finally:
             self.menuInforme.grab_release()
 
-    def plantillaRecepcionista(self, accion):
+    def gestionar_recepcionistas(self, accion):
         rol="Recepcionista"
         self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)    
 
 
-    def plantillaMedico(self, accion):
+    def gestionar_medicos(self, accion):
         rol="Medico"
         self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)
 
