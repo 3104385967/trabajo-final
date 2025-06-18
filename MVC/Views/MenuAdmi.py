@@ -84,7 +84,7 @@ class MenuAdministrador():
         Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_2)).place(x=230, y=65)
 
         if accion == "Generar":
-            btn = Button(ventanaPlantilla, text="Generar", width=15, command=lambda: self.accionGuardar("Generar"))
+            btn = Button(ventanaPlantilla, text="Generar", width=15)
         
         btn.place(x=90, y=200)
 

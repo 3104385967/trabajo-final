@@ -24,8 +24,10 @@ class Registro:
             Label(ventanaPlantilla, text="Teléfono:").place(x=10, y=130)
             Entry(ventanaPlantilla).place(x=100, y=130)
 
-            if rol=="Medico":
+            if rol=="Medico" and accion=="Registrar":
                 Label(ventanaPlantilla, text="Especialidades:").place(x=10, y=160)
+                self.btn_espe=Button(ventanaPlantilla, text="agregar especialidad").place(x=100, y=160)
+                
         
         elif accion=="Eliminar":
 
@@ -35,11 +37,11 @@ class Registro:
         
 
         if accion == "Registrar":
-            btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("registrar"))
+            btn = Button(ventanaPlantilla, text="Registrar", width=15)
         elif accion == "Modificar":
-            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
+            btn = Button(ventanaPlantilla, text="Modificar", width=15)
         elif accion == "Eliminar":
-            btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
+            btn = Button(ventanaPlantilla, text="Eliminar", width=15)
 
         btn.place(x=90, y=200)
 
