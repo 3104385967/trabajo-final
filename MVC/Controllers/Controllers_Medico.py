@@ -1,4 +1,4 @@
-from Model.ConexionBD import ConexionDB
+from Models.conexionBD import ConexionBD
 import tkinter as tk
 from tkinter import messagebox
 
@@ -12,13 +12,13 @@ class ControladorMedico():
     def obtener_id_medico(self):
         conexion=ConexionBD()
         conexion.crearConexion()
-        con=conexion.getconection()
+        con=conexion.getConnection()
         cursor=con.cursor()
 
 
         try:
             cursor.execute("SELECT * FROM medicos")
-            listaMedicos=cursor.fetchall()
+            listaMedicos=cursor.fetchall() #Resulatdos Consulta
 
             for medico in listaMedicos:
                 if medico[1] == self.id_usuario:
