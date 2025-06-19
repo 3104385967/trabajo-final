@@ -30,7 +30,7 @@ class MenuRecepcionista():
             self.menuCitas.grab_release()
 
     def plantillaPaciente(self, accion):
-        rol="Paciente"
+        rol="paciente"
         self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)
 
     
