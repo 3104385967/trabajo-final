@@ -1,8 +1,8 @@
-from  Views.Loggin import Loggin
+from Views.MenuAdmi import MenuAdministrador
 
 class Main():
     def main():
-        app = Loggin()
+        app = MenuAdministrador()
     main()
 
 
