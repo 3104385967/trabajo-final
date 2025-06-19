@@ -267,7 +267,7 @@ class Registro:
                     nombre= self.listbox_especialidades.get(i)
                     numero= self.lista_especialidades[i][0]
                     self.lista_esp_elegidas.append((numero,nombre))
-                    
+
                 messagebox.showinfo("Asignado", f"Especialidad '{self.especialidad}' asignada correctamente.")      
         else:
             messagebox.showinfo("Cancelado", "No se realizó la asignación.")
@@ -279,6 +279,6 @@ class Registro:
         print(self.accion)
         print(self.lista_esp_elegidas)
 
-        if self.accion=="Registrar":
-            registro.registrar()
+        #if self.accion=="Registrar":
+            #registro.registrar()
         
