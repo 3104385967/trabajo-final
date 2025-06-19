@@ -2,14 +2,17 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import winsound
+from tkcalendar import Calendar
+
+from .Registro import Registro
 
 class MenuAdministrador():
         
     def menuRecepcionista(self, event):
         self.menuRecepcionista = Menu(self.ventana, tearoff=0)
-        self.menuRecepcionista.add_command(label="Registrar Recepcionista", command=lambda: self.plantillaRecepcionista("Registrar"))
-        self.menuRecepcionista.add_command(label="Modificar Recepcionista", command=lambda: self.plantillaRecepcionista("Modificar"))
-        self.menuRecepcionista.add_command(label="Eliminar Recepcionista", command=lambda: self.plantillaRecepcionista("Eliminar"))
+        self.menuRecepcionista.add_command(label="Registrar Recepcionista", command=lambda: self.gestionar_recepcionistas("Registrar"))
+        self.menuRecepcionista.add_command(label="Modificar Recepcionista", command=lambda: self.gestionar_recepcionistas("Modificar"))
+        self.menuRecepcionista.add_command(label="Eliminar Recepcionista", command=lambda: self.gestionar_recepcionistas("Eliminar"))
 
         try:
             self.menuRecepcionista.tk_popup(event.x_root, event.y_root)
@@ -18,9 +21,9 @@ class MenuAdministrador():
 
     def menuMedico(self, event):
         self.menuMedico = Menu(self.ventana, tearoff=0)
-        self.menuMedico.add_command(label="Registrar Médico", command=lambda: self.plantillaMedico("Registrar"))
-        self.menuMedico.add_command(label="Modificar Médico", command=lambda: self.plantillaMedico("Modificar"))
-        self.menuMedico.add_command(label="Eliminar Médico", command=lambda: self.plantillaMedico("Eliminar"))
+        self.menuMedico.add_command(label="Registrar Médico", command=lambda: self.gestionar_medicos("Registrar"))
+        self.menuMedico.add_command(label="Modificar Médico", command=lambda: self.gestionar_medicos("Modificar"))
+        self.menuMedico.add_command(label="Eliminar Médico", command=lambda: self.gestionar_medicos("Eliminar"))
 
         try:
             self.menuMedico.tk_popup(event.x_root, event.y_root)
@@ -29,100 +32,69 @@ class MenuAdministrador():
 
     def menuInforme(self, event):
         self.menuInforme = Menu(self.ventana, tearoff=0)
-        self.menuInforme.add_command(label="Agregar informe", command=lambda: self.plantillaInforme("Agregar"))
-        self.menuInforme.add_command(label="Modificar informe", command=lambda: self.plantillaInforme("Modificar"))
-        self.menuInforme.add_command(label="Eliminar Informe", command=lambda: self.plantillaInforme("Eliminar"))
+        self.menuInforme.add_command(label="Generar informe", command=lambda: self.plantillaInforme("Generar"))
 
         try:
             self.menuInforme.tk_popup(event.x_root, event.y_root)
         finally:
             self.menuInforme.grab_release()
 
-    def plantillaRecepcionista(self, accion):
+    def gestionar_recepcionistas(self, accion):
+        rol="recepcionista"
+        self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)    
+
+
+    def gestionar_medicos(self, accion):
+        rol="medico"
+        self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)
+
+    
+    def plantillaInforme(self, accion):#Los informes se generan con las consultas registradas en la base de datos, por eso hay fechas para crear un excel con las citas que se han hecho en ese rango de fechas
         ventanaPlantilla = Toplevel(self.ventana)
-        ventanaPlantilla.title(f"{accion} Recepcionista")
-        ventanaPlantilla.geometry("300x300")
-        ventanaPlantilla.resizable(0, 0)
-
-        Label(ventanaPlantilla, text="Cédula:").place(x=10, y=10)
-        Entry(ventanaPlantilla).place(x=100, y=10)
-
-        Label(ventanaPlantilla, text="Nombre:").place(x=10, y=40)
-        Entry(ventanaPlantilla).place(x=100, y=40)
-
-        Label(ventanaPlantilla, text="Apellido:").place(x=10, y=70)
-        Entry(ventanaPlantilla).place(x=100, y=70)
-
-        Label(ventanaPlantilla, text="Correo:").place(x=10, y=100)
-        Entry(ventanaPlantilla).place(x=100, y=100)
-
-        Label(ventanaPlantilla, text="Teléfono:").place(x=10, y=130)
-        Entry(ventanaPlantilla).place(x=100, y=130)
-
-        if accion == "Registrar":
-            btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("registrar"))
-        elif accion == "Modificar":
-            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
-        elif accion == "Eliminar":
-            btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
-
-        btn.place(x=90, y=200)
-
-    def plantillaMedico(self, accion):
-        ventanaPlantilla = Toplevel(self.ventana)
-        ventanaPlantilla.title(f"{accion} Doctor")
-        ventanaPlantilla.geometry("300x300")
-        ventanaPlantilla.resizable(0, 0)
-
-        Label(ventanaPlantilla, text="Cédula:").place(x=10, y=10)
-        Entry(ventanaPlantilla).place(x=100, y=10)
-
-        Label(ventanaPlantilla, text="Nombre:").place(x=10, y=40)
-        Entry(ventanaPlantilla).place(x=100, y=40)
-
-        Label(ventanaPlantilla, text="Especialidad:").place(x=10, y=70)
-        Entry(ventanaPlantilla).place(x=100, y=70)
-
-        Label(ventanaPlantilla, text="Correo:").place(x=10, y=100)
-        Entry(ventanaPlantilla).place(x=100, y=100)
-
-        Label(ventanaPlantilla, text="Teléfono:").place(x=10, y=130)
-        Entry(ventanaPlantilla).place(x=100, y=130)
-
-        if accion == "Registrar":
-            btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("registrar"))
-        elif accion == "Modificar":
-            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
-        elif accion == "Eliminar":
-            btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
-
-        btn.place(x=90, y=200)
-
-    def plantillaInforme(self, accion):
-        ventanaPlantilla = Toplevel(self.ventana)
-        ventanaPlantilla.title(f"{accion} Informe")
+        ventanaPlantilla.title(f"Generar Informe")
         ventanaPlantilla.geometry("300x300")
         ventanaPlantilla.resizable(0, 0)
 
         Label(ventanaPlantilla, text="Informe").place(relx=0.5, y=10)
 
-        Label(ventanaPlantilla, text="ID:").place(x=10, y=40)
-        Entry(ventanaPlantilla).place(x=100, y=40)
+        Label(ventanaPlantilla, text="De que fecha:").place(x=8, y=40)#año,mes,dia
+        fecha_1=Entry(ventanaPlantilla, state="disabled")
+        fecha_1.place(x=100, y=40)
 
-        Label(ventanaPlantilla, text="Fecha:").place(x=10, y=70)
-        Entry(ventanaPlantilla).place(x=100, y=70)
+        Label(ventanaPlantilla, text="Hasta que fecha:").place(x=8, y=70)
+        fecha_2=Entry(ventanaPlantilla, state="disabled")
+        fecha_2.place(x=100, y=70)
+  
+        def abrir_calendario(fecha):
+            fecha.config(state="normal")
+            top_cal = Toplevel(ventanaPlantilla)
+            top_cal.title("Seleccionar Fecha")
+            cal = Calendar(top_cal, selectmode='day', date_pattern='yyyy-mm-dd')
+            cal.pack(pady=10)
 
-        Label(ventanaPlantilla, text="Cantidad:").place(x=10, y=100)
-        Entry(ventanaPlantilla).place(x=100, y=100)
+            def seleccionar_fecha():
+                fecha.delete(0, END)
+                fecha.insert(0, cal.get_date())
+                fecha.config(state="disabled")
+                top_cal.destroy()
 
+            Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
 
+<<<<<<< HEAD
         if accion == "Agregar":
             btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("Agregar"))
         elif accion == "Modificar":
             btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
         elif accion == "Eliminar":
             btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
+=======
+        Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_1)).place(x=230, y=35)
+        Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_2)).place(x=230, y=65)
+>>>>>>> 3aa3258aa209aafb8ba26f9d1aadd9ec252d20a5
 
+        if accion == "Generar":
+            btn = Button(ventanaPlantilla, text="Generar", width=15)
+        
         btn.place(x=90, y=200)
 
     def __init__(self):
@@ -139,12 +111,11 @@ class MenuAdministrador():
         self.btnMedicos.place(x=266, y=0, width=266, height=25)
         self.btnMedicos.bind("<Button-1>", self.menuMedico)
 
-        self.btnInformes = tk.Button(self.ventana, text="Gestionar Informes")
+        self.btnInformes = tk.Button(self.ventana, text="Generar Informes")
         self.btnInformes.place(x=532, y=0, width=266, height=25)
         self.btnInformes.bind("<Button-1>", self.menuInforme)
 
-        
-
+    
         self.ventana.mainloop()
 
 

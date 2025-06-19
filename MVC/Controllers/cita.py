@@ -1,4 +1,4 @@
-from Model.ConexionDB import ConexionDB 
+from Models.conexionBD import ConexionBD
 import tkinter as tk 
 from tkinter import messagebox 
 
@@ -14,7 +14,7 @@ class Cita():
         
 
     def agendarCita(self, nombre, apellido, telefono, fecha, hora):
-        miConexion = ConexionDB()
+        miConexion = ConexionBD()
         miConexion.crearConexion()
         con = miConexion.getConection()
         cursor = con.cursor()
@@ -31,7 +31,7 @@ class Cita():
 
 
     def cancelarCita(self, nombre, apellido, telefono, fecha, hora):
-        miConexion = ConexionDB()
+        miConexion = ConexionBD()
         miConexion.crearConexion()
         con = miConexion.getConection()
         cursor = con.cursor()

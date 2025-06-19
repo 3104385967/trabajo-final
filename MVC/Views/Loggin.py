@@ -1,44 +1,61 @@
 import tkinter as tk
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox as mb
 import winsound
+from .Tooltip import Tooltip
+from .Registro import Registro
+from Controllers.usuario import Usuario
 
 
 class Loggin():
+    def validar_ingreso(self,event):
+        usuario=Usuario(cedula=self.txtUsuario.get())
+        
+    
+    def gestionar_admin(self, event):
+        rol="administrador"
+        accion="Registrar"
+        self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)
+
+
+
     def limpiarCampos(self, event):
         self.txtUsuario.delete(0, END)
-        self.txtPassword.delete(0, END)
 
-    def validarCampos(self, event):
-        if(len(self.txtUsuario.get()) >= 5 and len(self.txtPassword.get()) >= 5):
-            if(len(self.txtUsuario.get()) <= 25 and len(self.txtPassword.get()) <= 25):
-                self.btnIngresar.config(state="normal")
-            elif(len(self.txtUsuario.get()) <= 25 and len(self.txtPassword.get()) >= 25):
-                self.txtPassword.delete(len(self.txtPassword.get())-1, END)
-            elif(len(self.txtUsuario.get()) >= 25 and len(self.txtPassword.get()) <= 25):
-                self.txtUsuario.delete(len(self.txtUsuario.get())-1, END)
-        else:
-            self.btnIngresar.config(state="disabled")
 
     def validarUsuario(self, event):
-        caracter = event.keysym
-        print(caracter," fue presionado.")
-        
-        if(caracter.isalpha() or caracter == '.' or caracter == "BackSpace"): # isdigit() - isalpha() - isalnum()
-            self.txtUsuario.config(bg="#ffffff", fg="#000000")
+        usuario= self.txtUsuario.get()
+        self.tool_usuario.hide_tooltip()
+   
+        if usuario.isdigit() or event.keysym == "BackSpace":
+            if len(self.txtUsuario.get())<=20:
+
+                self.tool_usuario.update_tooltip("Ingrese su numero de cedula",background="#76fa99")
+                self.estado_usuario="valido"
+            
+            elif len(self.txtUsuario.get()) > 20:
+                self.tool_usuario.update_tooltip("El usuario no debe tener más de 20 caracteres.", background="#fa8a76")
+                self.estado_usuario="invalido"
         else:
-            self.txtUsuario.config(bg="#f5b7b1", fg="#e74c3c")
-            winsound.Beep(1700, 333)
+            self.tool_usuario.update_tooltip("El usuario debe tener SOLO números.\nNO se aceptan caracteres especiales ni espacios",background="#fa8a76")
+            self.estado_usuario="invalido"
+
+        self.tool_usuario.show_tooltip()
+
+        if self.estado_usuario=="valido":
+            self.btnIngresar.config(state="normal")
+        elif self.estado_usuario=="invalido":
+            self.btnIngresar.config(state="disabled")
 
 
     def verCaracteres(self, event):
         if(self.bandera == True):
-            self.txtPassword.config(show='*')
-            self.btnVer.config(text="Ver")
+            self.txtUsuario.config(show='*')
+            self.btnVer.config(bg="#e74c3c")
             self.bandera = False
         else:
-            self.txtPassword.config(show='')
-            self.btnVer.config(text="Ocu")
+            self.txtUsuario.config(show='')
+            self.btnVer.config(bg="#83e73c")
             self.bandera = True
 
     
@@ -49,43 +66,38 @@ class Loggin():
         self.ventana.title("Inicio de Sesión")
 
         self.bandera = False
-        self.caracteresUsuario = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '.']
-        self.caracteresPassword = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-
+      
         self.lblTitulo = tk.Label(self.ventana, text="Inicio Sesión")
         self.lblTitulo.place(relx=0.5, y=50, anchor="center")
 
         self.lblUsuario = tk.Label(self.ventana, text="Usuario*:")
-        self.lblUsuario.place(x=100, y=125, width=70, height=25)
+        self.lblUsuario.place(x=70, y=125, width=70, height=25)
 
-        self.lblPassword = tk.Label(self.ventana, text="Password*:")
-        self.lblPassword.place(x=100, y=200, width=70, height=25)
+        self.txtUsuario = tk.Entry(self.ventana, show="*")
+        self.txtUsuario.place(relx=0.5, y=140, anchor="center",width=150, height=25)
+        self.txtUsuario.bind("<KeyRelease>", self.validarUsuario)
 
-        self.txtUsuario = tk.Entry(self.ventana)
-        self.txtUsuario.place(x=190, y=125, width=150, height=25)
-        self.txtUsuario.bind("<KeyRelease>", self.validarCampos)
-        self.txtUsuario.bind("<Key>", self.validarUsuario)
+        self.tool_usuario=Tooltip(self.txtUsuario, text="Ingrese su numero de cedula")
         
-        self.txtPassword = tk.Entry(self.ventana, show="*")
-        self.txtPassword.place(x=190, y=200, width=150, height=25)
-        self.txtPassword.bind("<KeyRelease>", self.validarCampos)
-
         self.btnAyuda = tk.Button(self.ventana, text="Ayuda")
         self.btnAyuda.place(x=320, y=50)
 
         self.btnIngresar = tk.Button(self.ventana, text="Ingresar", state="disabled")
-        self.btnIngresar.place(x=140, y=275, width=70, height=25)
-        self.btnIngresar.bind("<Button-1>")
+        self.btnIngresar.place(x=140, y=200, width=70, height=25)
+        self.btnIngresar.bind("<Button-1>",self.validar_ingreso )
 
         self.btnLimpiar = tk.Button(self.ventana, text="Limpiar")
-        self.btnLimpiar.place(x=230, y=275, width=70, height=25)
+        self.btnLimpiar.place(x=230, y=200, width=70, height=25)
         self.btnLimpiar.bind("<Button-1>", self.limpiarCampos)
 
-        self.btnVer = tk.Button(self.ventana, text="Ver")
-        self.btnVer.place(x=360, y=200, width=30, height=25)
-        self.btnVer.bind("<Enter>", self.verCaracteres)
-        self.btnVer.bind("<Leave>", self.verCaracteres)
+        self.btnVer = tk.Button(self.ventana, text="Ver", bg="#e74c3c")
+        self.btnVer.place(x=310, y=128, width=30, height=25)
+        self.btnVer.bind("<Button-1>", self.verCaracteres)
 
-       
+        self.btn_registrar_admi=tk.Button(self.ventana, text="Registrar administrador")
+        self.btn_registrar_admi.place(relx=0.5, y=270, anchor="center", width=150, height=25)
+        self.btn_registrar_admi.bind("<Button-1>", self.gestionar_admin)
+
+        self.estado_usuario=None
 
         self.ventana.mainloop()
