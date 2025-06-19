@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import winsound
-from Controllers.Controllers_Medico import ControladorMedico
 
 class MenuMedico():
     def menuCitas(self, event):
@@ -94,11 +93,7 @@ class MenuMedico():
         
     
 
-    def __init__(self, id_usuario):
-        self.id_usuario = id_usuario
-        self.controlador = ControladorMedico()
-        self.controlador.id_usuario = id_usuario
-        self.controlador.obtener_id_medico()
+    def __init__(self):
         
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
