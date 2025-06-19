@@ -4,7 +4,7 @@ from tkinter import *
 class Registro:
     def plantilla_registro(self, accion, rol):
         ventanaPlantilla = Toplevel(self.ventana)
-        ventanaPlantilla.title(f"{accion}{rol}")
+        ventanaPlantilla.title(f"{accion} {rol}")
         ventanaPlantilla.geometry("300x300")
         ventanaPlantilla.resizable(0, 0)
         if accion=="Registrar" or accion=="Modificar":
@@ -24,7 +24,7 @@ class Registro:
             Label(ventanaPlantilla, text="Teléfono:").place(x=10, y=130)
             Entry(ventanaPlantilla).place(x=100, y=130)
 
-            if rol=="Medico" and accion=="Registrar":
+            if rol=="medico" and accion=="Registrar":
                 Label(ventanaPlantilla, text="Especialidades:").place(x=10, y=160)
                 self.btn_espe=Button(ventanaPlantilla, text="agregar especialidad").place(x=100, y=160)
                 

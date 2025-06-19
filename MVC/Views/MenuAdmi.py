@@ -40,12 +40,12 @@ class MenuAdministrador():
             self.menuInforme.grab_release()
 
     def gestionar_recepcionistas(self, accion):
-        rol="Recepcionista"
+        rol="recepcionista"
         self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)    
 
 
     def gestionar_medicos(self, accion):
-        rol="Medico"
+        rol="medico"
         self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)
 
     
