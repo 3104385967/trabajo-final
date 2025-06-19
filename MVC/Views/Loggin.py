@@ -5,12 +5,26 @@ import winsound
 from .Tooltip import Tooltip
 from .Registro import Registro
 from Controllers.usuario import Usuario
+from .MenuMedico import MenuMedico
+from .MenuAdmi import MenuAdministrador
+from .MenuRecepcionista import MenuRecepcionista
+from .MenuPaciente import MenuPaciente
 
 
 class Loggin():
     def validar_ingreso(self,event):
         usuario=Usuario(cedula=self.txtUsuario.get())
-        
+        rol=usuario.iniciar_sesion()
+        if rol:
+            self.ventana.destroy()
+            if rol=="medico":
+                MenuMedico()
+            elif rol=="administrador":
+                MenuAdministrador()
+            elif rol=="paciente":
+                MenuPaciente()
+            elif rol=="recepcionista":
+                MenuRecepcionista()
     
     def gestionar_admin(self, event):
         rol="administrador"

@@ -2,7 +2,6 @@ from Models.conexionBD import ConexionBD
 import tkinter as tk
 from tkinter import messagebox
 
-from Views.MenuMedico import MenuMedico
 
 class ControladorMedico():
     def __init__(self):

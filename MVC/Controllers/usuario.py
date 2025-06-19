@@ -1,7 +1,8 @@
 from tkinter import messagebox
 from Models.conexionBD import ConexionBD
 
-class Usuario:
+
+class Usuario():
     
     def __init__(self, cedula):
         self.cedula=cedula
@@ -28,21 +29,27 @@ class Usuario:
                     self.rol= usuario[6]
                     if self.rol=="administrador":
                         messagebox.showinfo("informacion", f"Acceso correcto |Administrador|\nBienvenid@ {self.nombre_usuario} {self.apellido_usuario}")
+
                     elif self.rol=="recepcionista":
                         messagebox.showinfo("informacion", f"Acceso correcto |Recepcionista|\nBienvenid@ {self.nombre_usuario} {self.apellido_usuario}")
+
                     elif self.rol=="medico":
                         messagebox.showinfo("informacion", f"Acceso correcto |Medico|\nBienvenid@ {self.nombre_usuario} {self.apellido_usuario}")
+
                     elif self.rol=="paciente":
                         messagebox.showinfo("informacion", f"Acceso correcto |Paciente|\nBienvenid@ {self.nombre_usuario} {self.apellido_usuario}")
+
+
                     conexion.cerrarConexion()
-                    return
+                    return self.rol
             messagebox.showerror("Advertencia", "El numero de cedula ingresado no existe, verifique e intente nuevamente!" )
 
         except Exception as e:
-            messagebox.showerror("ERROR",f"No se pudo obtener el ID del medico. Comuniquese con el soporte:\n{str(e)}")
+            messagebox.showerror("ERROR",f"No se pudo ingresar. Comuniquese con el soporte:\n{str(e)}")
 
         finally:
             conexion.cerrarConexion()
     
     def obtener_info(self):
         return (self.id_usuario, self.cedula, self.nombre_usuario, self.apellido_usuario, self.rol)
+            #tupla (id,cedula,nombre,apellido,rol)=usuario.obtener_info()
