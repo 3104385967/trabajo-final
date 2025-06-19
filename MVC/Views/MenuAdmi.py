@@ -119,7 +119,7 @@ class MenuAdministrador():
         if accion == "Agregar":
             btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("Agregar"))
         elif accion == "Modificar":
-            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionguardar("modificar"))
+            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
         elif accion == "Eliminar":
             btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
 

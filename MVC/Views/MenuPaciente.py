@@ -4,6 +4,8 @@ from tkinter import messagebox
 import winsound
 from tkcalendar import Calendar
 
+#from Controllers.cita import Cita
+
 class MenuPaciente():
     def menuCitas(self, event):
         self.menuCitas = Menu(self.ventana, tearoff=0)
@@ -31,20 +33,24 @@ class MenuPaciente():
         ventanaPlantilla.resizable(0, 0)
 
         Label(ventanaPlantilla, text="Nombre:").place(x=10, y=10)
-        Entry(ventanaPlantilla).place(x=100, y=10)
+        self.nombre_entry = Entry(ventanaPlantilla)
+        self.nombre_entry.place(x=100, y=10)
 
         Label(ventanaPlantilla, text="Apellido").place(x=10, y=40)
-        Entry(ventanaPlantilla).place(x=100, y=40)
+        self.apellido_entry = Entry(ventanaPlantilla)
+        self.apellido_entry.place(x=100, y=40)
 
         Label(ventanaPlantilla, text="Telefono:").place(x=10, y=70)
-        Entry(ventanaPlantilla).place(x=100, y=70)
+        self.telefono_entry = Entry(ventanaPlantilla)
+        self.telefono_entry.place(x=100, y=70)
 
         Label(ventanaPlantilla, text="Hora:").place(x=10, y=130)
-        Entry(ventanaPlantilla).place(x=100, y=130)
+        self.hora_entry = Entry(ventanaPlantilla)
+        self.telefono_entry.place(x=100, y=130)
 
         Label(ventanaPlantilla, text="Fecha:").place(x=10, y=100)
-        fecha_entry = Entry(ventanaPlantilla)
-        fecha_entry.place(x=120, y=100)
+        self.fecha_entry = Entry(ventanaPlantilla)
+        self.fecha_entry.place(x=120, y=100)
 
         def abrir_calendario():
             top_cal = Toplevel(ventanaPlantilla)
@@ -53,8 +59,8 @@ class MenuPaciente():
             cal.pack(pady=10)
 
             def seleccionar_fecha():
-                fecha_entry.delete(0, END)
-                fecha_entry.insert(0, cal.get_date())
+                self.fecha_entry.delete(0, END)
+                self.fecha_entry.insert(0, cal.get_date())
                 top_cal.destroy()
 
             Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
