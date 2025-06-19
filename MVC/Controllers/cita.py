@@ -2,7 +2,6 @@ from Models.conexionBD import ConexionBD
 import tkinter as tk 
 from tkinter import messagebox 
 
-from Views.MenuPaciente import MenuPaciente
 
 class Cita():
     def __init__(self):
@@ -13,39 +12,55 @@ class Cita():
         self.hora = None
         
 
-    def agendarCita(self, nombre, apellido, telefono, fecha, hora):
+    def agendarCita(self, id_paciente, id_medico, fecha, hora):
         miConexion = ConexionBD()
         miConexion.crearConexion()
-        con = miConexion.getConection()
+        con = miConexion.getConnection()
         cursor = con.cursor()
 
         
         try:
-            cursor.execute("INSERT INTO cita (nombre, apellido, telefono, fecha, hora) VALUES (?, ?, ?, ?, ?)", (nombre, apellido, telefono, fecha, hora))
+            cursor.execute("INSERT INTO citas (id_paciente, id_medico, fecha, hora, estado) VALUES (?, ?, ?, ?, ?)", 
+                        (id_paciente, id_medico, fecha, hora, "pendiente"))
             con.commit()
-            messagebox.showinfo("La cita fue agendada adecuadamente.")
+            messagebox.showinfo("Éxito", "La cita fue agendada adecuadamente.")
         except Exception as e:
-            messagebox.showerror("No fue posible agendar la cita: {e}")
+            messagebox.showerror("Error", f"No fue posible agendar la cita: {e}")
         finally:
             miConexion.cerrarConexion()
 
 
-    def cancelarCita(self, nombre, apellido, telefono, fecha, hora):
+    def cancelarCita(self, id_paciente, id_medico, fecha, hora):
         miConexion = ConexionBD()
         miConexion.crearConexion()
-        con = miConexion.getConection()
+        con = miConexion.getConnection()
         cursor = con.cursor()
         
           
         try:
-            cursor.execute("DELETE FROM cita WHERE nombre = ? AND apellido = ? AND telefono = ? AND fecha = ? AND hora = ?", (nombre, apellido, telefono, fecha, hora))
+            cursor.execute("UPDATE citas SET estado = 'cancelada' WHERE id_paciente = ? AND id_medico = ? AND fecha = ? AND hora = ?", (id_paciente, id_medico, fecha, hora))
             con.commit()
-            messagebox.showinfo("La cita fue cancelada adecuadamente.")
+            messagebox.showinfo("Éxito", "La cita fue cancelada correctamente.")
         except Exception as e:
-            messagebox.showerror("No fue posible cancelar la cita: {e}")
+            messagebox.showerror("Error", f"No se pudo cancelar la cita: {e}")
         finally:
             miConexion.cerrarConexion()
-            
+
+    def obtenerHistorial(self, id_paciente):
+        miConexion = ConexionBD()
+        miConexion.crearConexion()
+        con = miConexion.getConnection()
+        cursor = con.cursor()
+
+        try:
+            cursor.execute("SELECT fecha, hora, estado FROM citas WHERE id_paciente = ?", (id_paciente,))
+            return cursor.fetchall()
+        except Exception as e:
+            messagebox.showerror("Error", f"No fue posible obtener el historial: {e}")
+            return []
+        finally:
+            miConexion.cerrarConexion()
+                    
  
     
 

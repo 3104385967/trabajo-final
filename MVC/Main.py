@@ -1,8 +1,7 @@
-from Views.MenuAdmi import MenuAdministrador
-
+from Views.MenuPaciente import MenuPaciente
 class Main():
     def main():
-        app = MenuAdministrador()
+        app = MenuPaciente()
     main()
 
 
