@@ -69,7 +69,6 @@ class Registro:
         listbox = Listbox(ventanaespecialidades, width=30, height=8)
         listbox.place(x=10, y=110)
 
-        # Cargar especialidades desde la BD
         try:
             conexion = ConexionBD()
             conexion.crearConexion()
