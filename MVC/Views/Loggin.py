@@ -57,6 +57,7 @@ class Loggin():
         self.tool_usuario.show_tooltip()
 
         if self.estado_usuario=="valido":
+            self.btnIngresar.bind("<Button-1>",self.validar_ingreso )
             self.btnIngresar.config(state="normal")
         elif self.estado_usuario=="invalido":
             self.btnIngresar.config(state="disabled")
@@ -98,19 +99,22 @@ class Loggin():
 
         self.btnIngresar = tk.Button(self.ventana, text="Ingresar", state="disabled")
         self.btnIngresar.place(x=140, y=200, width=70, height=25)
-        self.btnIngresar.bind("<Button-1>",self.validar_ingreso )
+        Tooltip(self.btnIngresar, text="Presione para ingresar")
 
         self.btnLimpiar = tk.Button(self.ventana, text="Limpiar")
         self.btnLimpiar.place(x=230, y=200, width=70, height=25)
         self.btnLimpiar.bind("<Button-1>", self.limpiarCampos)
+        Tooltip(self.btnLimpiar, text="Presione para limpiar")
 
         self.btnVer = tk.Button(self.ventana, text="Ver", bg="#e74c3c")
         self.btnVer.place(x=310, y=128, width=30, height=25)
         self.btnVer.bind("<Button-1>", self.verCaracteres)
+        Tooltip(self.btnVer, text="Presione para los ver caracteres")
 
         self.btn_registrar_admi=tk.Button(self.ventana, text="Registrar administrador")
         self.btn_registrar_admi.place(relx=0.5, y=270, anchor="center", width=150, height=25)
         self.btn_registrar_admi.bind("<Button-1>", self.gestionar_admin)
+        Tooltip(self.btn_registrar_admi, text="Presione para registrar un administrador")
 
         self.estado_usuario=None
 
