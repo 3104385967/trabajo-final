@@ -80,8 +80,17 @@ class MenuAdministrador():
 
             Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
 
+<<<<<<< HEAD
+        if accion == "Agregar":
+            btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("Agregar"))
+        elif accion == "Modificar":
+            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
+        elif accion == "Eliminar":
+            btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
+=======
         Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_1)).place(x=230, y=35)
         Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_2)).place(x=230, y=65)
+>>>>>>> 3aa3258aa209aafb8ba26f9d1aadd9ec252d20a5
 
         if accion == "Generar":
             btn = Button(ventanaPlantilla, text="Generar", width=15)
