@@ -1,7 +1,7 @@
-from Views.MenuRecepcionista import MenuRecepcionista
+from Views.Loggin import Loggin
 class Main():
     def main():
-        app = MenuRecepcionista()
+        app = Loggin()
     main()
 
 

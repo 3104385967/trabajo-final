@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import Listbox, END, messagebox
 from Controllers.registro import Registro_funcionalidades
 from .Tooltip import Tooltip
+from PIL import Image, ImageTk
+import os
 
 class Registro:
     def __init__(self, ventana, accion, rol):
@@ -11,12 +13,16 @@ class Registro:
         self.rol = rol
         self.lista_esp_elegidas=[]
 
-        self.ventanaPlantilla = Toplevel(self.ventana)
+        self.ventanaPlantilla = Toplevel(self.ventana, bg="#b9eaeb")
         self.ventanaPlantilla.title(f"{self.accion} {self.rol}")
-        self.ventanaPlantilla.geometry("300x250")
+        self.ventanaPlantilla.geometry("300x300")
         self.ventanaPlantilla.resizable(0, 0)
         self.ventanaPlantilla.transient(self.ventana)
         self.ventanaPlantilla.lift()
+
+        self.iconoIngresar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-add-user-25.png")
+        self.iconoModificar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-edit-button-25.png")
+        self.iconoLimpiar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-trash-25.png")
 
         if self.accion == "Registrar" or self.accion == "Modificar":
             Label(self.ventanaPlantilla, text="Cédula*:").place(x=10, y=10)
@@ -51,7 +57,7 @@ class Registro:
 
             if rol == "medico" and self.accion == "Registrar":
                 Label(self.ventanaPlantilla, text="Especialidades:").place(x=10, y=160)
-                self.btnEspecialidad=Button(self.ventanaPlantilla, text="Agregar especialidad", state="disabled")
+                self.btnEspecialidad=Button(self.ventanaPlantilla, text="Agregar especialidad", state="disabled", image=self.iconoIngresar, compound="left")
                 self.btnEspecialidad.place(x=100, y=160)
 
                 self.tool_especialidad=Tooltip(self.btnEspecialidad, text="Para poder agregar especialidades primero debe llenar \ntodos los campos de texto correctamente", background="#e74c3c")
@@ -66,14 +72,14 @@ class Registro:
             
         
         if self.accion == "Registrar":
-            self.btn = Button(self.ventanaPlantilla, text="Registrar", width=15)
+            self.btn = Button(self.ventanaPlantilla, text="Registrar", width=120, image=self.iconoIngresar, compound="left")
         elif self.accion == "Modificar":
-            self.btn = Button(self.ventanaPlantilla, text="Modificar", width=15)
+            self.btn = Button(self.ventanaPlantilla, text="Modificar", width=120, image=self.iconoModificar, compound="left")
         elif self.accion == "Eliminar":
-            self.btn = Button(self.ventanaPlantilla, text="Eliminar", width=15)
+            self.btn = Button(self.ventanaPlantilla, text="Eliminar", width=120, image=self.iconoLimpiar, compound="left")
 
         self.btn.place(x=90, y=200)
-        self.btn.config(state="disabled")
+        self.btn.config(state="normal")
         self.tool_accion=Tooltip(self.btn, text=f"Para poder {self.accion} primero debe llenar \ntodos los campos correctamente ", background="#fa8a76")
 
     def validar_cedula(self, event):
