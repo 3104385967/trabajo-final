@@ -9,6 +9,7 @@ from .MenuMedico import MenuMedico
 from .MenuAdmi import MenuAdministrador
 from .MenuRecepcionista import MenuRecepcionista
 from .MenuPaciente import MenuPaciente
+from PIL import Image, ImageTk
 
 
 class Loggin():
@@ -57,6 +58,7 @@ class Loggin():
         self.tool_usuario.show_tooltip()
 
         if self.estado_usuario=="valido":
+            self.btnIngresar.bind("<Button-1>",self.validar_ingreso )
             self.btnIngresar.config(state="normal")
         elif self.estado_usuario=="invalido":
             self.btnIngresar.config(state="disabled")
@@ -76,16 +78,25 @@ class Loggin():
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
-        self.ventana.config(width=440, height=350)
+        self.ventana.config(width=440, height=350, bg="#b9eaeb")
         self.ventana.title("Inicio de Sesión")
 
         self.bandera = False
-      
+
+        
+        self.iconoAyuda = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-help-25.png")
+        self.iconoIngresar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-login-25.png")
+        self.iconoLimpiar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-trash-25.png")
+        self.iconoVer = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-eye-25.png")
+        self.iconoRegistrar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-add-user-25.png")
+        self.iconoUsuario = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-user-25.png")
+
+
         self.lblTitulo = tk.Label(self.ventana, text="Inicio Sesión")
         self.lblTitulo.place(relx=0.5, y=50, anchor="center")
 
-        self.lblUsuario = tk.Label(self.ventana, text="Usuario*:")
-        self.lblUsuario.place(x=70, y=125, width=70, height=25)
+        self.lblUsuario = tk.Label(self.ventana, text="Usuario*:", image=self.iconoUsuario, compound="left")
+        self.lblUsuario.place(x=60, y=129, width=80, height=25)
 
         self.txtUsuario = tk.Entry(self.ventana, show="*")
         self.txtUsuario.place(relx=0.5, y=140, anchor="center",width=150, height=25)
@@ -93,24 +104,27 @@ class Loggin():
 
         self.tool_usuario=Tooltip(self.txtUsuario, text="Ingrese su numero de cedula")
         
-        self.btnAyuda = tk.Button(self.ventana, text="Ayuda")
-        self.btnAyuda.place(x=320, y=50)
+        self.btnAyuda = tk.Button(self.ventana, text="Ayuda", image=self.iconoAyuda, compound="left")
+        self.btnAyuda.place(x=330, y=50)
 
-        self.btnIngresar = tk.Button(self.ventana, text="Ingresar", state="disabled")
-        self.btnIngresar.place(x=140, y=200, width=70, height=25)
-        self.btnIngresar.bind("<Button-1>",self.validar_ingreso )
+        self.btnIngresar = tk.Button(self.ventana, text="Ingresar", state="disabled", image=self.iconoIngresar, compound="left")
+        self.btnIngresar.place(x=140, y=200, width=80, height=25)
+        Tooltip(self.btnIngresar, text="Presione para ingresar")
 
-        self.btnLimpiar = tk.Button(self.ventana, text="Limpiar")
-        self.btnLimpiar.place(x=230, y=200, width=70, height=25)
+        self.btnLimpiar = tk.Button(self.ventana, text="Limpiar", image=self.iconoLimpiar, compound="left")
+        self.btnLimpiar.place(x=230, y=200, width=80, height=25)
         self.btnLimpiar.bind("<Button-1>", self.limpiarCampos)
+        Tooltip(self.btnLimpiar, text="Presione para limpiar")
 
-        self.btnVer = tk.Button(self.ventana, text="Ver", bg="#e74c3c")
+        self.btnVer = tk.Button(self.ventana,image=self.iconoVer, bg="#ed69a3" )
         self.btnVer.place(x=310, y=128, width=30, height=25)
         self.btnVer.bind("<Button-1>", self.verCaracteres)
+        Tooltip(self.btnVer, text="Presione para los ver caracteres")
 
-        self.btn_registrar_admi=tk.Button(self.ventana, text="Registrar administrador")
-        self.btn_registrar_admi.place(relx=0.5, y=270, anchor="center", width=150, height=25)
+        self.btn_registrar_admi=tk.Button(self.ventana, text="Registrar administrador", image=self.iconoRegistrar, compound="left")
+        self.btn_registrar_admi.place(relx=0.5, y=270, anchor="center", width=160, height=25)
         self.btn_registrar_admi.bind("<Button-1>", self.gestionar_admin)
+        Tooltip(self.btn_registrar_admi, text="Presione para registrar un administrador")
 
         self.estado_usuario=None
 

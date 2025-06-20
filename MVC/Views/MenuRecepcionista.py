@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import winsound
 from tkcalendar import Calendar
-
+from PIL import Image, ImageTk
 from .Registro import Registro
 
 
@@ -41,16 +41,20 @@ class MenuRecepcionista():
         ventanaPlantilla.resizable(0, 0)
 
         Label(ventanaPlantilla, text="ID:").place(x=10, y=10)
-        Entry(ventanaPlantilla).place(x=100, y=10)
+        self.Id_entry = Entry(ventanaPlantilla)
+        self.Id_entry.place(x=100, y=10)
 
         Label(ventanaPlantilla, text="ID Pac").place(x=10, y=40)
-        Entry(ventanaPlantilla).place(x=100, y=40)
+        self.IdPa_entry = Entry(ventanaPlantilla)
+        self.IdPa_entry.place(x=100, y=40)
 
         Label(ventanaPlantilla, text="ID Medico:").place(x=10, y=70)
-        Entry(ventanaPlantilla).place(x=100, y=70)
+        self.IdMed_entry = Entry(ventanaPlantilla)
+        self.IdMed_entry.place(x=100, y=70)
 
         Label(ventanaPlantilla, text="Hora:").place(x=10, y=130)
-        Entry(ventanaPlantilla).place(x=100, y=130)
+        self.Hora_entry = Entry(ventanaPlantilla)
+        self.Hora_entry.place(x=100, y=130)
 
         Label(ventanaPlantilla, text="Fecha:").place(x=10, y=100)
         fecha_entry = Entry(ventanaPlantilla, state="disabled")
@@ -84,15 +88,26 @@ class MenuRecepcionista():
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
-        self.ventana.config(width=800, height=600)
+        self.ventana.config(width=800, height=600, bg="#9beef0")
         self.ventana.title("Menú Recepcionista")
 
-        self.btnPaciente = tk.Button(self.ventana, text="Gestionar paciente")
-        self.btnPaciente.place(x=0, y=0, width=266, height=25)
+        imagen = Image.open(r"trabajo-final\MVC\Views\Icons\recepcionista.png")
+        imagen = imagen.resize((700, 500))
+        self.imagen_tk = ImageTk.PhotoImage(imagen)
+
+        self.lblImagen = Label(self.ventana, image=self.imagen_tk)
+        self.lblImagen.place(x=50, y=50)
+
+        self.iconoGenPacientes = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-patient-care-25.png")
+        self.iconoCita = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-bookmark-25.png")
+        
+
+        self.btnPaciente = tk.Button(self.ventana, text="Gestionar paciente", image=self.iconoGenPacientes, compound="left")
+        self.btnPaciente.place(x=0, y=0, width=400, height=25)
         self.btnPaciente.bind("<Button-1>", self.menuPaciente)
 
-        self.btnCitas = tk.Button(self.ventana, text="Agendar citas")
-        self.btnCitas.place(x=266, y=0, width=266, height=25)
+        self.btnCitas = tk.Button(self.ventana, text="Agendar citas", image=self.iconoCita, compound="left")
+        self.btnCitas.place(x=400, y=0, width=400, height=25)
         self.btnCitas.bind("<Button-1>", self.menuCitas)
 
         

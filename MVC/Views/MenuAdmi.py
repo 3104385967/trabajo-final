@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import winsound
-from tkcalendar import Calendar 
+from tkcalendar import Calendar
+import tkinter as tk
+from PIL import Image, ImageTk
 
 from .Registro import Registro
 
@@ -50,12 +52,14 @@ class MenuAdministrador():
 
     
     def plantillaInforme(self, accion):#Los informes se generan con las consultas registradas en la base de datos, por eso hay fechas para crear un excel con las citas que se han hecho en ese rango de fechas
-        ventanaPlantilla = Toplevel(self.ventana)
+        ventanaPlantilla = Toplevel(self.ventana, bg="#b9eaeb")
         ventanaPlantilla.title(f"Generar Informe")
-        ventanaPlantilla.geometry("300x300")
+        ventanaPlantilla.geometry("300x140")
         ventanaPlantilla.resizable(0, 0)
 
-        Label(ventanaPlantilla, text="Informe").place(relx=0.5, y=10)
+        self.iconoGenerar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-seo-text-25.png")
+
+        Label(ventanaPlantilla, text="Informe").place(relx=0.5, y=20, anchor="center")
 
         Label(ventanaPlantilla, text="De que fecha:").place(x=8, y=40)#año,mes,dia
         fecha_1=Entry(ventanaPlantilla, state="disabled")
@@ -80,38 +84,44 @@ class MenuAdministrador():
 
             Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
 
-<<<<<<< HEAD
-        if accion == "Agregar":
-            btn = Button(ventanaPlantilla, text="Registrar", width=15, command=lambda: self.accionGuardar("Agregar"))
-        elif accion == "Modificar":
-            btn = Button(ventanaPlantilla, text="Modificar", width=15, command=lambda: self.accionGuardar("modificar"))
-        elif accion == "Eliminar":
-            btn = Button(ventanaPlantilla, text="Eliminar", width=15, command=lambda: self.accionGuardar("eliminar"))
-=======
         Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_1)).place(x=230, y=35)
         Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_2)).place(x=230, y=65)
->>>>>>> 3aa3258aa209aafb8ba26f9d1aadd9ec252d20a5
 
         if accion == "Generar":
-            btn = Button(ventanaPlantilla, text="Generar", width=15)
+            btn = Button(ventanaPlantilla, text="Generar", width=120, image=self.iconoGenerar, compound="left")
         
-        btn.place(x=90, y=200)
+        btn.place(x=90, y=100)
 
+    def generar_informe(self):
+        pass
+    
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
-        self.ventana.config(width=800, height=600)
+        self.ventana.config(width=800, height=600, bg = "#9beef0")
         self.ventana.title("Menú Administrador")
 
-        self.btnRecepcionista = tk.Button(self.ventana, text="Gestionar Recepcionista")
+        imagen = Image.open(r"trabajo-final\MVC\Views\Icons\adminis.png")
+        imagen = imagen.resize((700, 500))
+        self.imagen_tk = ImageTk.PhotoImage(imagen)
+
+        self.lblImagen = Label(self.ventana, image=self.imagen_tk)
+        self.lblImagen.place(x=50, y=50)
+
+        self.iconoRecep = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-receptionist-25.png")
+        self.iconoMed = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-care-25.png")
+        self.iconoInfo = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-new-copy-25.png")
+
+
+        self.btnRecepcionista = tk.Button(self.ventana, text="Gestionar Recepcionista", image=self.iconoRecep, compound="left")
         self.btnRecepcionista.place(x=0, y=0, width=266, height=25)
         self.btnRecepcionista.bind("<Button-1>", self.menuRecepcionista)
 
-        self.btnMedicos = tk.Button(self.ventana, text="Gestionar Médico")
+        self.btnMedicos = tk.Button(self.ventana, text="Gestionar Médico", image=self.iconoMed, compound="left")
         self.btnMedicos.place(x=266, y=0, width=266, height=25)
         self.btnMedicos.bind("<Button-1>", self.menuMedico)
 
-        self.btnInformes = tk.Button(self.ventana, text="Generar Informes")
+        self.btnInformes = tk.Button(self.ventana, text="Generar Informes", image=self.iconoInfo, compound="left")
         self.btnInformes.place(x=532, y=0, width=266, height=25)
         self.btnInformes.bind("<Button-1>", self.menuInforme)
 
