@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import winsound
 from tkcalendar import Calendar
-
+from PIL import Image, ImageTk
 from Controllers.cita import Cita
 
 class MenuPaciente():
@@ -132,14 +132,25 @@ class MenuPaciente():
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
-        self.ventana.config(width=800, height=600)
+        self.ventana.config(width=800, height=600, bg="#9beef0")
         self.ventana.title("Menú Paciente")
 
-        self.btnCitas = tk.Button(self.ventana, text="Solicitar cita")
+        
+        imagen = Image.open(r"trabajo-final\MVC\Views\Icons\paciente.png")
+        imagen = imagen.resize((700, 500))
+        self.imagen_tk = ImageTk.PhotoImage(imagen)
+
+        self.lblImagen = Label(self.ventana, image=self.imagen_tk)
+        self.lblImagen.place(x=50, y=50)
+
+        self.iconoSolicitar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-bookmark-25.png")
+        self.iconoHistoria = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-clock-25.png")
+       
+        self.btnCitas = tk.Button(self.ventana, text="Solicitar cita", image=self.iconoSolicitar, compound="left")
         self.btnCitas.place(x=0, y=0, width=400, height=25)
         self.btnCitas.bind("<Button-1>", self.menuCitas)
 
-        self.btnHistorial = tk.Button(self.ventana, text="Historial")
+        self.btnHistorial = tk.Button(self.ventana, text="Historial", image=self.iconoHistoria, compound="left")
         self.btnHistorial.place(x=400, y=0, width=400, height=25)
         self.btnHistorial.bind("<Button-1>", self.menuDiagnosticos)
 

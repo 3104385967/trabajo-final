@@ -4,6 +4,7 @@ from tkinter import messagebox
 import winsound
 from Controllers.Controllers_Medico import  ControladorMedico
 from Controllers.usuario import Usuario
+from PIL import Image, ImageTk
 
 class MenuMedico():
     def menuCitas(self, event):
@@ -137,19 +138,30 @@ class MenuMedico():
         
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
-        self.ventana.config(width=800, height=600)
+        self.ventana.config(width=800, height=600, bg="#9beef0")
         self.ventana.title("Menú Médico")
 
-        self.btnConsultar = tk.Button(self.ventana, text="Consultar citas")
+        imagen = Image.open(r"trabajo-final\MVC\Views\Icons\medico.png")
+        imagen = imagen.resize((700, 500))
+        self.imagen_tk = ImageTk.PhotoImage(imagen)
+
+        self.lblImagen = Label(self.ventana, image=self.imagen_tk)
+        self.lblImagen.place(x=50, y=50)
+
+        self.iconoConsultar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-dating-website-25.png")
+        self.iconoGenerar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-seo-text-25.png")
+        self.iconoVer = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-eye-25.png")
+
+        self.btnConsultar = tk.Button(self.ventana, text="Consultar citas", image=self.iconoConsultar, compound="left")
         self.btnConsultar.place(x=0, y=0, width=266, height=25)
         self.btnConsultar.bind("<Button-1>", self.menuCitas)
 
         
-        self.btnRecetas = tk.Button(self.ventana, text="Generar receta")
+        self.btnRecetas = tk.Button(self.ventana, text="Generar receta", image=self.iconoGenerar, compound="left")
         self.btnRecetas.place(x=266, y=0, width=266, height=25)
         self.btnRecetas.bind("<Button-1>", self.menuReceta)
 
-        self.btnVerRecetas = tk.Button(self.ventana, text="Ver recetas")
+        self.btnVerRecetas = tk.Button(self.ventana, text="Ver recetas", image=self.iconoVer, compound="left")
         self.btnVerRecetas.place(x=532, y=0, width=266, height=25)
         self.btnVerRecetas.bind("<Button-1>", lambda e: self.plantillaVerRecetas())
 
