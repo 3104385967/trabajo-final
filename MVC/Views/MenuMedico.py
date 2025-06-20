@@ -30,12 +30,14 @@ class MenuMedico():
     
 
     def plantillaCitas(self):
-        ventanaPlantilla = Toplevel(self.ventana)
+        ventanaPlantilla = Toplevel(self.ventana, bg="#9beef0")
         ventanaPlantilla.title("Consultar Citas")
         ventanaPlantilla.geometry("550x300")
         ventanaPlantilla.resizable(0, 0)
         listbox = Listbox(ventanaPlantilla, width=80, height=20)
         listbox.pack(pady=20, padx=10)
+
+        self.iconoCerrar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-close-window-25.png")
 
         controlador = ControladorMedico()
         controlador.id_usuario = self.id_usuario 
@@ -52,17 +54,18 @@ class MenuMedico():
         else:
            listbox.insert(END, "No hay citas registradas para este médico.")
         
-        btn_cerrar = Button(ventanaPlantilla, text="Cerrar", width=15, command=ventanaPlantilla.destroy)
+        btn_cerrar = Button(ventanaPlantilla, text="Cerrar", width=115, image=self.iconoCerrar, compound="left", command=ventanaPlantilla.destroy)
         btn_cerrar.place(x=200, y=250)
 
 
     
     def plantillaReceta(self):
-        ventanaPlantilla = Toplevel(self.ventana)
+        ventanaPlantilla = Toplevel(self.ventana, bg="#9beef0")
         ventanaPlantilla.title("Generar receta")
         ventanaPlantilla.geometry("300x300")
         ventanaPlantilla.resizable(0, 0)
 
+        self.iconoGenerar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-seo-text-25.png")
 
         Label(ventanaPlantilla, text="ID Paciente:").place(x=10, y=40)
         entry_pac = Entry(ventanaPlantilla)
@@ -103,11 +106,11 @@ class MenuMedico():
             messagebox.showinfo("Éxito", "Receta generada correctamente.")
             ventanaPlantilla.destroy()
 
-        btn = Button(ventanaPlantilla, text="Generar", width=15, command=guardarReceta)
+        btn = Button(ventanaPlantilla, text="Generar", width=115,image=self.iconoGenerar, compound="left", command=guardarReceta)
         btn.place(x=100, y=200)
 
     def plantillaVerRecetas(self):
-        ventanaRecetas = Toplevel(self.ventana)
+        ventanaRecetas = Toplevel(self.ventana, bg="#9beef0")
         ventanaRecetas.title("Recetas generadas")
         ventanaRecetas.geometry("550x300")
         ventanaRecetas.resizable(0, 0)
@@ -127,7 +130,7 @@ class MenuMedico():
         else:
           listbox.insert(END, "No hay recetas generadas.")
 
-        Button(ventanaRecetas, text="Cerrar", command=ventanaRecetas.destroy).pack(pady=5)
+        Button(ventanaRecetas, text="Cerrar", image=self.iconoCerrar,compound="left", width=115, command=ventanaRecetas.destroy).pack(pady=5)
 
         
     

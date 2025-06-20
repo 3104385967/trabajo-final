@@ -52,10 +52,12 @@ class MenuAdministrador():
 
     
     def plantillaInforme(self, accion):#Los informes se generan con las consultas registradas en la base de datos, por eso hay fechas para crear un excel con las citas que se han hecho en ese rango de fechas
-        ventanaPlantilla = Toplevel(self.ventana)
+        ventanaPlantilla = Toplevel(self.ventana, bg="#b9eaeb")
         ventanaPlantilla.title(f"Generar Informe")
         ventanaPlantilla.geometry("300x140")
         ventanaPlantilla.resizable(0, 0)
+
+        self.iconoGenerar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-seo-text-25.png")
 
         Label(ventanaPlantilla, text="Informe").place(relx=0.5, y=20, anchor="center")
 
@@ -86,12 +88,13 @@ class MenuAdministrador():
         Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_2)).place(x=230, y=65)
 
         if accion == "Generar":
-            btn = Button(ventanaPlantilla, text="Generar", width=15)
+            btn = Button(ventanaPlantilla, text="Generar", width=120, image=self.iconoGenerar, compound="left")
         
         btn.place(x=90, y=100)
 
     def generar_informe(self):
         pass
+    
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
