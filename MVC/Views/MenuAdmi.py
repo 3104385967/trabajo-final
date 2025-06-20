@@ -54,10 +54,10 @@ class MenuAdministrador():
     def plantillaInforme(self, accion):#Los informes se generan con las consultas registradas en la base de datos, por eso hay fechas para crear un excel con las citas que se han hecho en ese rango de fechas
         ventanaPlantilla = Toplevel(self.ventana)
         ventanaPlantilla.title(f"Generar Informe")
-        ventanaPlantilla.geometry("300x300")
+        ventanaPlantilla.geometry("300x140")
         ventanaPlantilla.resizable(0, 0)
 
-        Label(ventanaPlantilla, text="Informe").place(relx=0.5, y=10)
+        Label(ventanaPlantilla, text="Informe").place(relx=0.5, y=20, anchor="center")
 
         Label(ventanaPlantilla, text="De que fecha:").place(x=8, y=40)#año,mes,dia
         fecha_1=Entry(ventanaPlantilla, state="disabled")
@@ -88,8 +88,10 @@ class MenuAdministrador():
         if accion == "Generar":
             btn = Button(ventanaPlantilla, text="Generar", width=15)
         
-        btn.place(x=90, y=200)
+        btn.place(x=90, y=100)
 
+    def generar_informe(self):
+        pass
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
