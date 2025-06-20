@@ -23,7 +23,7 @@ class Usuario():
             listausuarios=cursor.fetchall()
             for usuario in listausuarios:
                 if usuario[1]==self.cedula:
-                    self.id_usuario= usuario[0]
+                    id_usuario= usuario[0]
                     self.nombre_usuario= usuario[2]
                     self.apellido_usuario= usuario[3]
                     self.rol= usuario[6]
@@ -41,7 +41,7 @@ class Usuario():
 
 
                     conexion.cerrarConexion()
-                    return self.rol
+                    return self.rol, id_usuario
             messagebox.showerror("Advertencia", "El numero de cedula ingresado no existe, verifique e intente nuevamente!" )
 
         except Exception as e:
@@ -50,6 +50,7 @@ class Usuario():
         finally:
             conexion.cerrarConexion()
     
+
     def obtener_info(self):
         return (self.id_usuario, self.cedula, self.nombre_usuario, self.apellido_usuario, self.rol)
             #tupla (id,cedula,nombre,apellido,rol)=usuario.obtener_info()

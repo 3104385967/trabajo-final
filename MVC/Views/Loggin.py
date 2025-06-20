@@ -15,11 +15,11 @@ from PIL import Image, ImageTk
 class Loggin():
     def validar_ingreso(self,event):
         usuario=Usuario(cedula=self.txtUsuario.get())
-        rol=usuario.iniciar_sesion()
+        rol,id_usuario=usuario.iniciar_sesion()
         if rol:
             self.ventana.destroy()
             if rol=="medico":
-                MenuMedico()
+                MenuMedico(id_usuario=id_usuario)
             elif rol=="administrador":
                 MenuAdministrador()
             elif rol=="paciente":

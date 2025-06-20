@@ -1,7 +1,6 @@
 from Models.conexionBD import ConexionBD
 import tkinter as tk
 from tkinter import messagebox
-from Controllers.usuario import Usuario
 
 
 class ControladorMedico():

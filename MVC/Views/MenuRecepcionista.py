@@ -30,6 +30,10 @@ class MenuRecepcionista():
         finally:
             self.menuCitas.grab_release()
 
+    def plantillaPaciente(self,accion):
+        rol="paciente"
+        self.registro=Registro(ventana=self.ventana, accion=accion, rol=rol)
+
     def plantillaCita(self, accion):
         ventanaPlantilla = Toplevel(self.ventana,bg="#b9eaeb")
         ventanaPlantilla.title(f"{accion} Cita")
