@@ -68,7 +68,7 @@ class Cita():
             miConexion.cerrarConexion()
 
 
-    def cancelarCita(self, cedula):
+    def cancelarCita(self, cedula, hora, fecha):
         miConexion = ConexionBD()
         miConexion.crearConexion()
         con = miConexion.getConnection()
@@ -92,7 +92,7 @@ class Cita():
                 return
             id_paciente = result[0]
                 
-            cursor.execute("UPDATE citas SET estado = 'cancelada' WHERE id_paciente = %s ", (id_paciente,))
+            cursor.execute("UPDATE citas SET estado = 'cancelada' WHERE id_paciente = %s AND fecha=%s AND hora=%s ", (id_paciente,fecha,hora))
             con.commit()
             messagebox.showinfo("Éxito", "La cita fue cancelada correctamente.")
             
