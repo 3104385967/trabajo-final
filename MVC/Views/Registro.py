@@ -59,8 +59,11 @@ class Registro:
 
         elif self.accion == "Eliminar":
             Label(self.ventanaPlantilla, text="Cédula:").place(x=10, y=100)
-            self.txteliminar=Entry(self.ventanaPlantilla)
-            self.txteliminar.place(x=100, y=100)
+            self.txtCedula=Entry(self.ventanaPlantilla)
+            self.txtCedula.place(x=100, y=100)
+            self.tool_cedula=Tooltip(self.txtCedula, text=f"Ingrese la cedula del {self.rol} que desea eliminar del sistema")
+            self.txtCedula.bind("<KeyRelease>", self.validar_cedula)
+            
         
         if self.accion == "Registrar":
             self.btn = Button(self.ventanaPlantilla, text="Registrar", width=15)
@@ -90,13 +93,24 @@ class Registro:
             self.estado_cedula="invalido"
 
         self.tool_cedula.show_tooltip()
+
+        if self.accion=="Eliminar":
+            if self.estado_cedula=="valido":
+                self.tool_accion.update_tooltip(text=f"Presione para {self.accion}", background="#76fa99")
+                self.btn.config(state="normal")
+                self.btn.bind("<Button-1>", self.eliminar_usuario)
+            else:
+                self.tool_accion.update_tooltip(text=f"Para poder {self.accion} primero debe llenar \ntodos los campos correctamente ", background="#fa8a76")
+                self.btn.config(state="disabled")
+                self.btn.unbind("<Button-1>")
+
             
 
     def validar_nombre(self, event):
         nombre=self.txtNombre.get()
         self.tool_nombre.hide_tooltip()
 
-        if nombre.isalpha() or event.keysym == "BackSpace" :
+        if nombre.replace(" ", "").isalpha() or event.keysym == "BackSpace" or event.keysym=="space" :
             if len(nombre)<=20:
                 self.tool_nombre.update_tooltip("Ingrese su nombre",background="#76fa99")
                 self.estado_nombre="valido"
@@ -106,7 +120,7 @@ class Registro:
                 self.estado_nombre="invalido"
 
         else:
-            self.tool_nombre.update_tooltip("El nombre debe tener SOLO letras.\nNO se aceptan caracteres especiales/espacios/numeros",background="#fa8a76")
+            self.tool_nombre.update_tooltip("El nombre debe tener SOLO letras.\nNO se aceptan caracteres especiales/numeros",background="#fa8a76")
             self.estado_nombre="invalido"
 
         self.tool_nombre.show_tooltip()
@@ -115,7 +129,7 @@ class Registro:
         apellido=self.txtApellido.get()
         self.tool_apellido.hide_tooltip()
 
-        if apellido.isalpha() or event.keysym == "BackSpace" :
+        if apellido.replace(" ", "").isalpha() or event.keysym == "BackSpace" or event.keysym=="space" :
             
             if len(apellido)<=20:
                 self.tool_apellido.update_tooltip("Ingrese su apellido",background="#76fa99")
@@ -124,7 +138,7 @@ class Registro:
                 self.tool_apellido.update_tooltip("El apellido NO puede tener mas de 20 caracteres.", background="#fa8a76")
                 self.estado_apellido="invalido"
         else: 
-            self.tool_apellido.update_tooltip("El apellido debe tener SOLO letras.\nNO se aceptan caracteres especiales/espacios/numeros",background="#fa8a76")
+            self.tool_apellido.update_tooltip("El apellido debe tener SOLO letras.\nNO se aceptan caracteres especiales/numeros",background="#fa8a76")
             self.estado_apellido="invalido"
 
         self.tool_apellido.show_tooltip()
@@ -229,7 +243,7 @@ class Registro:
     def confirmar_especialidades(self,event):
         try:
             if len(self.lista_esp_elegidas)>1:
-                esp="\n🌸".join(self.lista_esp_elegidas)
+                esp="\n🌸".join(f"{nombre}" for _, nombre in self.lista_esp_elegidas)
                 text=f"¿Desea asignar las especialidades\n\n{esp} ?\n\n🌸Si no acepta se borraran todas las especialidades seleccionadas"
             else:
                 text=f"¿Desea asignar la especialidad\n\n{self.especialidad}?\n\n🌸Si no acepta se borraran todas las especialidades seleccionadas"
@@ -260,15 +274,17 @@ class Registro:
             "Confirmar asignación",f"¿Desea asignar la especialidad \n\n🌸{self.especialidad}\n\nAl médico {nombre} con cédula {cedula}?")
 
         if confirmar:
-            if self.especialidad in self.lista_esp_elegidas:
-                messagebox.showerror("error", f"La especialidad {self.especialidad} ya a sido seleccionada")
-            else:
-                for i in seleccion:
+            for i in seleccion:
                     nombre= self.listbox_especialidades.get(i)
                     numero= self.lista_especialidades[i][0]
-                    self.lista_esp_elegidas.append((numero,nombre))
+                    tupla=(numero,nombre)
 
-                messagebox.showinfo("Asignado", f"Especialidad '{self.especialidad}' asignada correctamente.")      
+                    if tupla in self.lista_esp_elegidas:
+                        messagebox.showerror("error", f"La especialidad {self.especialidad} ya a sido seleccionada")
+                    else:
+                    
+                        self.lista_esp_elegidas.append(tupla)
+                        messagebox.showinfo("Asignado", f"Especialidad '{self.especialidad}' asignada correctamente.")      
         else:
             messagebox.showinfo("Cancelado", "No se realizó la asignación.")
 
@@ -279,6 +295,21 @@ class Registro:
         print(self.accion)
         print(self.lista_esp_elegidas)
 
-        #if self.accion=="Registrar":
-            #registro.registrar()
+        if self.accion=="Registrar":
+            primero=registro.registrar()
+            if primero=="si":
+                self.ventanaPlantilla.destroy()
+        elif self.accion=="Modificar":
+            primero=registro.modificar()
+            if primero=="si":
+                self.ventanaPlantilla.destroy()
+
+    def eliminar_usuario(self,event):
+        registro=Registro_funcionalidades(rol=self.rol, accion=self.accion,cedula=self.txtCedula.get(),nombre=None, apellido=None, correo=None, telefono=None, lista=None)
+        print(self.txtCedula.get())
+        if self.accion=="Eliminar":
+            primero=registro.eliminar()
+            if primero=="si":
+                self.ventanaPlantilla.destroy()
+
         
