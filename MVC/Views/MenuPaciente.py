@@ -28,69 +28,89 @@ class MenuPaciente():
     
     def plantillaCita(self, accion):
         ventanaPlantilla = Toplevel(self.ventana)
-        ventanaPlantilla.title(f"{accion} Paciente")
+        ventanaPlantilla.title(f"{accion} Cita")
         ventanaPlantilla.geometry("300x300")
         ventanaPlantilla.resizable(0, 0)
+        ventanaPlantilla.transient(self.ventana)
+        ventanaPlantilla.lift()
 
-        Label(ventanaPlantilla, text="ID Paciente:").place(x=10, y=10)
-        self.id_paciente = Entry(ventanaPlantilla)
-        self.id_paciente.place(x=100, y=10)
 
-        Label(ventanaPlantilla, text="ID Medíco:").place(x=10, y=40)
-        self.id_medico = Entry(ventanaPlantilla)
-        self.id_medico.place(x=100, y=40)
+        if accion=="agendar":
+            Label(ventanaPlantilla, text="Cedula Paciente:").place(x=10, y=20)
+            self.txtCedula = Entry(ventanaPlantilla)
+            self.txtCedula.place(x=110, y=20)
 
-        Label(ventanaPlantilla, text="fecha:").place(x=10, y=70)
-        self.fecha_entry = Entry(ventanaPlantilla)
-        self.fecha_entry.place(x=100, y=70)
+            Label(ventanaPlantilla, text="fecha:").place(x=60, y=50)
+            self.fecha_entry = Entry(ventanaPlantilla, state="disabled")
+            self.fecha_entry.place(x=110, y=50)
 
-        
+            Label(ventanaPlantilla, text="Hora:").place(x=60, y=80)
+            self.hora_entry = Entry(ventanaPlantilla)
+            self.hora_entry.place(x=110, y=80)
 
-        def abrir_calendario():
-            top_cal = Toplevel(ventanaPlantilla)
-            top_cal.title("Seleccionar Fecha")
-            cal = Calendar(top_cal, selectmode='day', date_pattern='yyyy-mm-dd')
-            cal.pack(pady=10)
+            Label(ventanaPlantilla, text="Medícos:").place(x=10, y=130)
+            self.listbox = Listbox(ventanaPlantilla, width=30, height=8)
+            self.listbox.place(x=60, y=110)
 
-            def seleccionar_fecha():
-                self.fecha_entry.delete(0, END)
-                self.fecha_entry.insert(0, cal.get_date())
-                top_cal.destroy()
+            cita=Cita()
+            self.lista_medicos=cita.cargar_medicos()
 
-            Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
+            for med in self.lista_medicos:
+                    self.listbox.insert(END, med[2])
 
-        Button(ventanaPlantilla, text="📅", command=abrir_calendario).place(x=280, y=98)
+            def abrir_calendario():
+                self.fecha_entry.config(state="normal")
+                top_cal = Toplevel(ventanaPlantilla)
+                top_cal.title("Seleccionar Fecha")
+                cal = Calendar(top_cal, selectmode='day', date_pattern='yyyy-mm-dd')
+                cal.pack(pady=10)
 
-        Label(ventanaPlantilla, text="Hora:").place(x=10, y=130)
-        self.hora_entry = Entry(ventanaPlantilla)
-        self.hora_entry.place(x=100, y=130)
+                def seleccionar_fecha():
+                    self.fecha_entry.delete(0, END)
+                    self.fecha_entry.insert(0, cal.get_date())
+                    self.fecha_entry.config(state="disabled")
+                    top_cal.destroy()
 
+                Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
+
+            Button(ventanaPlantilla, text="📅", command=abrir_calendario).place(x=250, y=50)
+
+        elif accion=="cancelar":
+            Label(ventanaPlantilla, text="Cedula Paciente:").place(x=10, y=120)
+            self.txtCedula = Entry(ventanaPlantilla)
+            self.txtCedula.place(x=110, y=120)
 
         accion = "Agendar" if accion == "agendar" else "Cancelar"
-        btn = Button(ventanaPlantilla, text=accion.capitalize(), width=15, command=lambda: self.gestionarCita(accion))
-        btn.place(x=120, y=200)
+        btn = Button(ventanaPlantilla, text=accion.capitalize(), width=15, command=lambda: self.gestionarCita(accion,ventana=ventanaPlantilla))
+        btn.place(relx=0.5, y=280, anchor="center")
 
+    
     def gestionarCita(self, accion):
         accion = accion.strip().lower()  
-        id_paciente = (self.id_paciente.get())
-        id_medico = (self.id_medico.get())
-        hora = (self.hora_entry.get())
-        fecha = (self.fecha_entry.get())
+        cedula_paciente = (self.txtCedula.get())
+        if accion =="agendar":
+            hora = (self.hora_entry.get())
+            fecha = (self.fecha_entry.get())
+            try:
+                medico=self.listbox.curselection()
+                nombre_medico=self.listbox.get(medico[0])
+                print(nombre_medico)
+            except IndexError:
+                messagebox.showwarning("Error","Debe elegir un medico")
+            if  not fecha or not hora:
+                messagebox.showerror("Error", "Todos los campos son obligatorios.")
+                return
 
-        if not id_paciente.isdigit():
-            messagebox.showerror("Error", "El ID del paciente debe ser un número válido.")
+        if not cedula_paciente.isdigit():
+            messagebox.showerror("Error", "la cedula del paciente debe ser un número válido.")
             return
-
-        if not id_medico or not fecha or not hora:
-            messagebox.showerror("Error", "Todos los campos son obligatorios.")
-            return
-
         cita = Cita()
 
         if accion == "agendar":
-            cita.agendarCita(id_paciente, id_medico, fecha, hora)
+            cita.agendarCita(medico=nombre_medico,fecha=fecha, hora=hora, cedula=cedula_paciente)
+    
         else:
-            cita.cancelarCita(id_paciente, id_medico, fecha, hora)
+            cita.cancelarCita(cedula=cedula_paciente)
     
 
     def plantillaDiagnosticos(self):
@@ -98,8 +118,10 @@ class MenuPaciente():
         ventana.title("Historial")
         ventana.geometry("300x300")
         ventana.resizable(0, 0)
-        
-        Label(ventana, text="ID Paciente:").place(x=10, y=10)
+        ventana.transient(self.ventana)
+        ventana.lift()
+
+        Label(ventana, text="cedula Paciente:").place(x=10, y=10)
         entrada = Entry(ventana)
         entrada.place(x=100, y=10)
 
@@ -107,13 +129,13 @@ class MenuPaciente():
         historial.place(x=10, y=40)
 
         def verHistorial():
-            id_paciente = entrada.get()
-            if not id_paciente.isdigit():
-                messagebox.showerror("ID inválido", "Debe ingresar un número.")
+            cedula_paciente = entrada.get()
+            if not cedula_paciente.isdigit():
+                messagebox.showerror("cedula inválida", "Debe ingresar un número.")
                 return
             
             historial.delete(0, END)
-            datos = Cita().obtenerHistorial(id_paciente)
+            datos = Cita().obtenerHistorial(cedula=cedula_paciente)
             if datos:
                 for cita in datos:
                     fecha, hora, estado = cita
@@ -127,7 +149,6 @@ class MenuPaciente():
         Button(ventana, text="Cerrar", command=ventana.destroy).place(x=200, y=240)
 
    
-
 
     def __init__(self):
         self.ventana = tk.Tk()
