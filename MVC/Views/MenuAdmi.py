@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import winsound
-from tkcalendar import Calendar 
+from tkcalendar import Calendar
+import tkinter as tk
+from PIL import Image, ImageTk
 
 from .Registro import Registro
 
@@ -91,18 +93,30 @@ class MenuAdministrador():
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.resizable(0,0)
-        self.ventana.config(width=800, height=600)
+        self.ventana.config(width=800, height=600, bg = "#9beef0")
         self.ventana.title("Menú Administrador")
 
-        self.btnRecepcionista = tk.Button(self.ventana, text="Gestionar Recepcionista")
+        imagen = Image.open(r"trabajo-final\MVC\Views\Icons\adminis.png")
+        imagen = imagen.resize((700, 500))
+        self.imagen_tk = ImageTk.PhotoImage(imagen)
+
+        self.lblImagen = Label(self.ventana, image=self.imagen_tk)
+        self.lblImagen.place(x=50, y=50)
+
+        self.iconoRecep = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-receptionist-25.png")
+        self.iconoMed = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-care-25.png")
+        self.iconoInfo = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-new-copy-25.png")
+
+
+        self.btnRecepcionista = tk.Button(self.ventana, text="Gestionar Recepcionista", image=self.iconoRecep, compound="left")
         self.btnRecepcionista.place(x=0, y=0, width=266, height=25)
         self.btnRecepcionista.bind("<Button-1>", self.menuRecepcionista)
 
-        self.btnMedicos = tk.Button(self.ventana, text="Gestionar Médico")
+        self.btnMedicos = tk.Button(self.ventana, text="Gestionar Médico", image=self.iconoMed, compound="left")
         self.btnMedicos.place(x=266, y=0, width=266, height=25)
         self.btnMedicos.bind("<Button-1>", self.menuMedico)
 
-        self.btnInformes = tk.Button(self.ventana, text="Generar Informes")
+        self.btnInformes = tk.Button(self.ventana, text="Generar Informes", image=self.iconoInfo, compound="left")
         self.btnInformes.place(x=532, y=0, width=266, height=25)
         self.btnInformes.bind("<Button-1>", self.menuInforme)
 
