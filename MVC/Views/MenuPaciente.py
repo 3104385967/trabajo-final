@@ -27,7 +27,7 @@ class MenuPaciente():
             self.menuDiagnosticos.grab_release()
     
     def plantillaCita(self, accion):
-        ventanaPlantilla = Toplevel(self.ventana)
+        ventanaPlantilla = Toplevel(self.ventana,bg="#b9eaeb")
         ventanaPlantilla.title(f"{accion} Cita")
         ventanaPlantilla.geometry("300x300")
         ventanaPlantilla.resizable(0, 0)
@@ -114,7 +114,7 @@ class MenuPaciente():
     
 
     def plantillaDiagnosticos(self):
-        ventana = Toplevel(self.ventana)
+        ventana = Toplevel(self.ventana,bg="#b9eaeb")
         ventana.title("Historial")
         ventana.geometry("300x300")
         ventana.resizable(0, 0)

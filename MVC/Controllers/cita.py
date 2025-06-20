@@ -1,6 +1,8 @@
 from Models.conexionBD import ConexionBD
 import tkinter as tk 
 from tkinter import messagebox 
+from openpyxl import Workbook
+from tkinter.filedialog import asksaveasfilename
 
 
 class Cita():
@@ -146,6 +148,60 @@ class Cita():
             messagebox.showerror("Error", f"No se pudo cargar la lista de medicos:\n{str(e)}")
         finally:
             conexion.cerrarConexion()
+
+    def generar_informe(self, fecha1, fecha2):
+        try:
+            conexion = ConexionBD()
+            conexion.crearConexion()
+            conn = conexion.getConnection()
+            cursor = conn.cursor()
+
+            #fecha  nombre_paciente  nombre_medico  estado de la cita
+            cursor.execute("""
+                            SELECT c.fecha, up.nombre, um.nombre, c.estado
+                            FROM citas c
+                            JOIN pacientes p ON c.id_paciente = p.id_paciente
+                            JOIN medicos m ON c.id_medico = m.id_medico
+                            JOIN usuarios up ON p.id_usuario = up.id_usuario
+                            JOIN usuarios um ON m.id_usuario = um.id_usuario
+                            WHERE c.fecha BETWEEN %s AND %s
+                            ORDER BY c.fecha ASC
+                        """,(fecha1,fecha2))
+            consultas=cursor.fetchall()
+            if not consultas:
+                messagebox.showerror("Error","No hay citas registradas en ese rango de fechas")
+                return
+            # Crear archivo Excel
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Consultas Médicas"
+            encabezados = ["Fecha", "Paciente", "Médico", "Estado_cita"]
+            ws.append(encabezados)
+
+            # Escribir los datos
+            for fila in consultas:
+                ws.append(fila)
+                
+            # Guardar archivo
+
+            ruta = asksaveasfilename(
+                                        defaultextension=".xlsx",
+                                        filetypes=[("Archivos de Excel", "*.xlsx")],
+                                        title="Guardar informe como"
+                                    )
+            
+            if ruta:
+                wb.save(ruta)
+                messagebox.showinfo("Éxito", f"El informe fue guardado correctamente en:\n{ruta}")
+            else:
+                messagebox.showinfo("Cancelado", "No se guardó ningún archivo.")
+
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo cargar el informe de consultas:\n{str(e)}")
+        finally:
+            cursor.close()
+            conexion.cerrarConexion()
+
                     
  
     

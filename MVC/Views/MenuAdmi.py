@@ -7,6 +7,8 @@ import tkinter as tk
 from PIL import Image, ImageTk
 
 from .Registro import Registro
+from Controllers.cita import Cita
+
 
 class MenuAdministrador():
         
@@ -56,18 +58,20 @@ class MenuAdministrador():
         ventanaPlantilla.title(f"Generar Informe")
         ventanaPlantilla.geometry("300x140")
         ventanaPlantilla.resizable(0, 0)
+        ventanaPlantilla.transient(self.ventana)
+        ventanaPlantilla.lift()
 
         self.iconoGenerar = tk.PhotoImage(file=r"trabajo-final\MVC\Views\Icons\icons8-seo-text-25.png")
 
         Label(ventanaPlantilla, text="Informe").place(relx=0.5, y=20, anchor="center")
 
         Label(ventanaPlantilla, text="De que fecha:").place(x=8, y=40)#año,mes,dia
-        fecha_1=Entry(ventanaPlantilla, state="disabled")
-        fecha_1.place(x=100, y=40)
+        self.fecha_1=Entry(ventanaPlantilla, state="disabled")
+        self.fecha_1.place(x=100, y=40)
 
         Label(ventanaPlantilla, text="Hasta que fecha:").place(x=8, y=70)
-        fecha_2=Entry(ventanaPlantilla, state="disabled")
-        fecha_2.place(x=100, y=70)
+        self.fecha_2=Entry(ventanaPlantilla, state="disabled")
+        self.fecha_2.place(x=100, y=70)
   
         def abrir_calendario(fecha):
             fecha.config(state="normal")
@@ -84,16 +88,19 @@ class MenuAdministrador():
 
             Button(top_cal, text="Seleccionar", command=seleccionar_fecha).pack(pady=5)
 
-        Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_1)).place(x=230, y=35)
-        Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=fecha_2)).place(x=230, y=65)
+        Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=self.fecha_1)).place(x=230, y=35)
+        Button(ventanaPlantilla, text="📅", command=lambda: abrir_calendario(fecha=self.fecha_2)).place(x=230, y=65)
 
         if accion == "Generar":
             btn = Button(ventanaPlantilla, text="Generar", width=120, image=self.iconoGenerar, compound="left")
         
         btn.place(x=90, y=100)
+        btn.bind("<Button-1>", self.generar_informe)
 
-    def generar_informe(self):
-        pass
+    def generar_informe(self,event):
+        informe=Cita()
+        informe.generar_informe(fecha1=self.fecha_1.get(), fecha2=self.fecha_2.get())
+        
     
     def __init__(self):
         self.ventana = tk.Tk()

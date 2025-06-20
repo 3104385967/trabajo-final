@@ -36,7 +36,7 @@ class MenuRecepcionista():
 
 
     def plantillaCita(self, accion):
-        ventanaPlantilla = Toplevel(self.ventana)
+        ventanaPlantilla = Toplevel(self.ventana,bg="#b9eaeb")
         ventanaPlantilla.title(f"{accion} Cita")
         ventanaPlantilla.geometry("300x300")
         ventanaPlantilla.resizable(0, 0)
